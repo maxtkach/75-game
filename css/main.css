@@ -1,0 +1,184 @@
+/* ═══════════════════════════════════════════════════════
+   MAIN.CSS — Design System, Custom Properties, Base
+   ═══════════════════════════════════════════════════════ */
+
+:root {
+  /* Color palette */
+  --clr-bg:          #050008;
+  --clr-bg2:         #0d0118;
+  --clr-surface:     rgba(15, 5, 28, 0.82);
+  --clr-surface2:    rgba(30, 10, 55, 0.75);
+  --clr-glass:       rgba(255, 255, 255, 0.06);
+  --clr-glass-border:rgba(255, 255, 255, 0.12);
+  --clr-primary:     #e8a0bf;
+  --clr-primary-dim: #c26b93;
+  --clr-accent:      #f5d0e8;
+  --clr-gold:        #f0c060;
+  --clr-gold-dim:    #c8942a;
+  --clr-fate:        #b0a0ff;
+  --clr-fate-dim:    #7060d0;
+  --clr-love:        #ff8aac;
+  --clr-love-dim:    #d0406a;
+  --clr-text:        #f0e8f8;
+  --clr-text-dim:    rgba(240, 232, 248, 0.65);
+  --clr-text-muted:  rgba(240, 232, 248, 0.35);
+  --clr-white:       #ffffff;
+
+  /* Typography */
+  --font-serif:  'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-sans:   'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Spacing */
+  --sp-xs: 0.25rem;
+  --sp-sm: 0.5rem;
+  --sp-md: 1rem;
+  --sp-lg: 1.5rem;
+  --sp-xl: 2rem;
+  --sp-2xl: 3rem;
+
+  /* Radius */
+  --r-sm:   8px;
+  --r-md:   16px;
+  --r-lg:   24px;
+  --r-xl:   32px;
+  --r-full: 9999px;
+
+  /* Shadows */
+  --shadow-glow-love:  0 0 40px rgba(255, 138, 172, 0.35);
+  --shadow-glow-fate:  0 0 40px rgba(176, 160, 255, 0.35);
+  --shadow-glow-gold:  0 0 50px rgba(240, 192, 96, 0.4);
+  --shadow-panel:      0 8px 64px rgba(0, 0, 0, 0.7), 0 2px 16px rgba(0,0,0,0.5);
+  --shadow-btn:        0 4px 24px rgba(0, 0, 0, 0.4);
+
+  /* Transitions */
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:    cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Text speed (ms per char) — overridden by settings */
+  --text-speed: 40ms;
+
+  /* Game dimensions */
+  --game-w: min(100vw, calc(100vh * 9 / 16));
+  --game-h: 100vh;
+}
+
+/* ─── Reset ─────────────────────────────────────────── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--clr-bg);
+  color: var(--clr-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+  cursor: default;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* ─── Loading Screen ─────────────────────────────────── */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--clr-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s var(--ease-inout);
+}
+
+.loading-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-inner {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-lg);
+}
+
+.loading-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-sm);
+}
+
+.loading-number {
+  font-family: var(--font-serif);
+  font-size: clamp(5rem, 15vw, 8rem);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  background: linear-gradient(135deg, var(--clr-primary), var(--clr-fate), var(--clr-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+.loading-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 3vw, 1.4rem);
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--clr-text-dim);
+  font-weight: 300;
+}
+
+.loading-bar-wrap {
+  width: clamp(180px, 40vw, 280px);
+  height: 2px;
+  background: rgba(255,255,255,0.1);
+  border-radius: var(--r-full);
+  overflow: hidden;
+}
+
+.loading-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--clr-love), var(--clr-fate));
+  border-radius: var(--r-full);
+  transition: width 0.3s var(--ease-out);
+  box-shadow: 0 0 12px var(--clr-love);
+}
+
+.loading-hint {
+  font-size: 0.8rem;
+  color: var(--clr-text-muted);
+  letter-spacing: 0.15em;
+  font-weight: 300;
+}
+
+/* ─── Hidden utility ──────────────────────────────────── */
+.hidden {
+  display: none !important;
+}
+
+.invisible {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}

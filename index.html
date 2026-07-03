@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Маршрут 75 — интерактивная визуальная новелла о судьбе, выборе и лучшем понедельнике." />
+  <meta name="theme-color" content="#0a0010" />
+  <title>Маршрут 75</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/game.css" />
+  <link rel="stylesheet" href="css/dialogue.css" />
+  <link rel="stylesheet" href="css/choices.css" />
+  <link rel="stylesheet" href="css/ui.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!--  LOADING SCREEN                                  -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div id="loading-screen" class="loading-screen">
+    <div class="loading-inner">
+      <div class="loading-logo">
+        <span class="loading-number">75</span>
+        <span class="loading-title">Маршрут</span>
+      </div>
+      <div class="loading-bar-wrap">
+        <div class="loading-bar" id="loading-bar"></div>
+      </div>
+      <p class="loading-hint">Загрузка истории...</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!--  MAIN MENU                                       -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div id="main-menu" class="main-menu hidden">
+    <div class="menu-bg-layer" id="menu-parallax-bg"></div>
+    <div class="menu-overlay"></div>
+    <div class="menu-content">
+      <div class="menu-logo-area">
+        <p class="menu-subtitle">Одесса. Теплодар. Маршрут 75.</p>
+        <p class="menu-subtitle">И понедельник, который оказался лучше, чем планировалось.</p>
+        <h1 class="menu-title">Маршрут <span class="menu-title-accent">75</span></h1>
+      </div>
+      <div class="menu-buttons">
+        <button id="btn-new-game" class="menu-btn menu-btn-primary" onclick="Engine.newGame()">
+          <span class="menu-btn-icon">✦</span>
+          <span>Начать историю</span>
+        </button>
+        <button id="btn-continue" class="menu-btn menu-btn-secondary hidden" onclick="Engine.continueGame()">
+          <span class="menu-btn-icon">◈</span>
+          <span>Продолжить</span>
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!--  GAME SCREEN                                     -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div id="game-screen" class="game-screen hidden">
+
+    <!-- Background layer with parallax -->
+    <div class="game-bg-wrapper" id="game-bg-wrapper">
+      <div class="game-bg" id="game-bg"></div>
+    </div>
+
+    <!-- CG Image layer -->
+    <div class="cg-layer" id="cg-layer">
+      <img id="cg-image" class="cg-image" src="" alt="" draggable="false" />
+    </div>
+
+    <!-- Vignette overlay -->
+    <div class="game-vignette"></div>
+
+    <!-- Top UI bar -->
+    <div class="game-top-bar">
+      <div class="game-chapter-label" id="chapter-label"></div>
+      <button class="game-menu-btn" id="btn-game-menu" onclick="UI.toggleGameMenu()" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Character name tag -->
+    <div class="character-name-wrap" id="character-name-wrap">
+      <span class="character-name" id="character-name"></span>
+    </div>
+
+    <!-- Dialogue panel -->
+    <div class="dialogue-panel" id="dialogue-panel">
+      <div class="dialogue-text-wrap">
+        <p class="dialogue-text" id="dialogue-text"></p>
+      </div>
+      <div class="dialogue-next-hint" id="dialogue-next-hint">
+        <span class="next-hint-icon">▼</span>
+      </div>
+    </div>
+
+    <!-- Choices panel -->
+    <div class="choices-panel hidden" id="choices-panel">
+      <div class="choices-inner" id="choices-inner"></div>
+    </div>
+
+    <!-- Toast notifications -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- In-game menu overlay -->
+    <div class="game-menu-overlay hidden" id="game-menu-overlay">
+      <div class="game-menu-panel">
+        <h2 class="game-menu-title">Меню</h2>
+        <button class="game-menu-item" onclick="UI.closeGameMenu()">
+          <span>▶</span> Продолжить
+        </button>
+        <button class="game-menu-item" onclick="Engine.newGame()">
+          <span>↺</span> Начать сначала
+        </button>
+        <button class="game-menu-item" onclick="UI.openSettings()">
+          <span>⚙</span> Настройки
+        </button>
+        <button class="game-menu-item" onclick="Engine.goToMainMenu()">
+          <span>⌂</span> Главное меню
+        </button>
+        <button class="game-menu-close" onclick="UI.closeGameMenu()">✕</button>
+      </div>
+    </div>
+
+    <!-- Settings overlay -->
+    <div class="settings-overlay hidden" id="settings-overlay">
+      <div class="settings-panel">
+        <h2 class="settings-title">Настройки</h2>
+
+        <div class="settings-group">
+          <label class="settings-label">
+            <span>🎵 Музыка</span>
+            <div class="toggle-wrap">
+              <input type="range" id="setting-music" min="0" max="100" value="70" class="settings-slider" oninput="UI.onMusicChange(this.value)" />
+              <span class="slider-val" id="music-val">70%</span>
+            </div>
+          </label>
+
+          <label class="settings-label">
+            <span>🔊 Звуки</span>
+            <div class="toggle-wrap">
+              <input type="range" id="setting-sfx" min="0" max="100" value="80" class="settings-slider" oninput="UI.onSfxChange(this.value)" />
+              <span class="slider-val" id="sfx-val">80%</span>
+            </div>
+          </label>
+
+          <label class="settings-label">
+            <span>⚡ Скорость текста</span>
+            <div class="toggle-wrap">
+              <input type="range" id="setting-speed" min="1" max="5" value="3" step="1" class="settings-slider" oninput="UI.onSpeedChange(this.value)" />
+              <span class="slider-val" id="speed-val">Норм</span>
+            </div>
+          </label>
+
+          <label class="settings-label">
+            <span>⛶ Полный экран</span>
+            <button class="toggle-btn" id="fullscreen-btn" onclick="UI.toggleFullscreen()">Включить</button>
+          </label>
+        </div>
+
+        <button class="settings-close" onclick="UI.closeSettings()">Готово</button>
+      </div>
+    </div>
+
+    <!-- Achievement popup -->
+    <div class="achievement-overlay hidden" id="achievement-overlay">
+      <div class="achievement-card" id="achievement-card">
+        <div class="achievement-glow"></div>
+        <div class="achievement-inner">
+          <div class="achievement-icon" id="achievement-icon">🏆</div>
+          <div class="achievement-label">Достижение разблокировано</div>
+          <div class="achievement-name" id="achievement-name">Лучший понедельник</div>
+          <div class="achievement-desc" id="achievement-desc"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ending screen -->
+    <div class="ending-screen hidden" id="ending-screen">
+      <div class="ending-content">
+        <div class="ending-stars">✦ ✧ ✦</div>
+        <p class="ending-quote" id="ending-quote"></p>
+        <div class="ending-stats" id="ending-stats"></div>
+        <div class="ending-achievements" id="ending-achievements"></div>
+        <button class="ending-reward-btn hidden" id="ending-reward-btn" onclick="Engine.claimReward()">
+          🎁 Получить награду
+        </button>
+        <button class="ending-restart-btn" onclick="Engine.newGame()">↺ Сначала</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Audio elements (populated by engine) -->
+  <audio id="audio-bg" loop></audio>
+  <audio id="audio-sfx"></audio>
+
+  <!-- Scripts (order matters) -->
+  <script src="js/saveSystem.js"></script>
+  <script src="js/animationSystem.js"></script>
+  <script src="js/dialogueSystem.js"></script>
+  <script src="js/choiceSystem.js"></script>
+  <script src="js/sceneManager.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/scenes.js"></script>
+  <script src="js/engine.js"></script>
+</body>
+</html>
